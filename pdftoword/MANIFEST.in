@@ -1,0 +1,6 @@
+include *.md
+include LICENSE*
+include requirements.txt
+prune test
+include test/*.py
+include test/samples/*.pdf

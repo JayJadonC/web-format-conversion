@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jay - 功能</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="index.html">主页</a></li>
+                <li><a href="features.html">功能</a></li>
+                <li><a href="contact.html">联系</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="features-container">
+        <h1>文档转换功能</h1>
+
+        <!-- PDF转Word -->
+        <div class="feature-card">
+            <h2>PDF 转 Word</h2>
+            <form id="pdf-to-word-form">
+                <input type="file" id="pdf-file" accept=".pdf" required>
+                <button type="submit">开始转换</button>
+                <div class="result-area"></div>
+            </form>
+        </div>
+
+        <!-- Word转PDF -->
+        <div class="feature-card">
+            <h2>Word 转 PDF</h2>
+            <form id="word-to-pdf-form">
+                <input type="file" id="word-file" accept=".doc,.docx" required>
+                <button type="submit">开始转换</button>
+                <div class="result-area"></div>
+            </form>
+        </div>
+
+        <!-- PPT转PDF -->
+        <div class="feature-card">
+            <h2>PPT 转 PDF</h2>
+            <form id="ppt-to-pdf-form">
+                <input type="file" id="ppt-file" accept=".ppt,.pptx" required>
+                <button type="submit">开始转换</button>
+                <div class="result-area"></div>
+            </form>
+        </div>
+
+        <!-- PDF转PPT -->
+        <div class="feature-card">
+            <h2>PDF 转 PPT</h2>
+            <form id="pdf-to-ppt-form">
+                <input type="file" id="pdf-file" accept=".pdf" required>
+                <button type="submit">开始转换</button>
+                <div class="result-area"></div>
+            </form>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
