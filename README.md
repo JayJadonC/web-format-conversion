@@ -1,10 +1,16 @@
 # web-format-conversion
-I have built a website that includes a simple format conversion function. Everyone is welcome to contribute.
-Currently, the entire file conversion feature is not functioning properly. Here are some possible solutions to achieve this functionality.
-JavaScript Code (Frontend)
-In the script.js file, we write JavaScript code to handle file selection and conversion requests.
 
-    document.getElementById('convert-button').addEventListener('click', function() {
+
+I have built a website that includes a simple format conversion function. Everyone is welcome to contribute.
+
+Currently, the entire file conversion feature is not functioning properly. Here are some possible solutions to achieve this functionality.
+
+## JavaScript Code (Frontend)
+
+In the `script.js` file, we write JavaScript code to handle file selection and conversion requests.
+
+```javascript
+document.getElementById('convert-button').addEventListener('click', function() {
     const fileInput = document.getElementById('file-input');
     const file = fileInput.files[0];
     if (!file) {
@@ -34,19 +40,23 @@ In the script.js file, we write JavaScript code to handle file selection and con
     }).catch(error => {
         console.error('Error:', error);
         alert('File conversion failed, please try again later');
-      });
-   });
+    });
+});
+```
 
+## Backend Code (Node.js + Express)
 
-
-Backend Code (Node.js + Express)
 On the backend, we use Node.js and the Express framework to handle file uploads and conversion logic. 
+
 First, install the necessary dependencies:
 
-bash
+```bash
 npm install express multer pdf-to-word
+```
+
 Then, write the backend code:
 
+```javascript
 const express = require('express');
 const multer = require('multer');
 const pdfToWord = require('pdf-to-word');
@@ -87,13 +97,13 @@ app.post('/convert', upload.single('file'), (req, res) => {
             // Delete temporary files
             fs.unlinkSync(inputPath);
             fs.unlinkSync(outputPath);
-           });
-       });
-   });
+        });
+    });
+});
+
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
 });
-
-
+```
 
 You can refine and improve my program based on what I have provided. I am immensely grateful for your efforts.
