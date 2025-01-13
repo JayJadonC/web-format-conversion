@@ -25,7 +25,7 @@
             <h2>PDF 转 Word</h2>
             <form id="pdf-to-word-form">
                 <input type="file" id="pdf-file" accept=".pdf" required>
-                <button type="submit">开始转换</button>
+                <button type="button" onclick="pdfToWord()">开始转换</button>
                 <div class="result-area"></div>
             </form>
         </div>
@@ -35,7 +35,7 @@
             <h2>Word 转 PDF</h2>
             <form id="word-to-pdf-form">
                 <input type="file" id="word-file" accept=".doc,.docx" required>
-                <button type="submit">开始转换</button>
+                <button type="button" onclick="wordToPdf()">开始转换</button>
                 <div class="result-area"></div>
             </form>
         </div>
@@ -45,7 +45,7 @@
             <h2>PPT 转 PDF</h2>
             <form id="ppt-to-pdf-form">
                 <input type="file" id="ppt-file" accept=".ppt,.pptx" required>
-                <button type="submit">开始转换</button>
+                <button type="button" onclick="pptToPdf()">开始转换</button>
                 <div class="result-area"></div>
             </form>
         </div>
@@ -54,13 +54,165 @@
         <div class="feature-card">
             <h2>PDF 转 PPT</h2>
             <form id="pdf-to-ppt-form">
-                <input type="file" id="pdf-file" accept=".pdf" required>
-                <button type="submit">开始转换</button>
+                <input type="file" id="pdf-file2" accept=".pdf" required>
+                <button type="button" onclick="pdfToPpt()">开始转换</button>
                 <div class="result-area"></div>
             </form>
         </div>
     </main>
 
-    <script src="script.js"></script>
+    <script>
+        // OnlineConvertFree API的URL和API密钥
+        const API_URL = 'https://api.onlineconvertfree.com/v1/convert';
+        const API_KEY = 'cb5f580f0375f29cf19bef365b30a22b';
+
+        // PDF转Word
+        function pdfToWord() {
+            const input = document.getElementById('pdf-file');
+            const file = input.files[0];
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('output_format', 'docx');
+
+            fetch(API_URL, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${API_KEY}`
+                },
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    const url = data.result.url;
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'converted.docx';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                } else {
+                    console.error('Error:', data.error);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        // Word转PDF
+        function wordToPdf() {
+            const input = document.getElementById('word-file');
+            const file = input.files[0];
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('output_format', 'pdf');
+
+            fetch(API_URL, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${API_KEY}`
+                },
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    const url = data.result.url;
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'converted.pdf';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                } else {
+                    console.error('Error:', data.error);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        // PPT转PDF
+        function pptToPdf() {
+            const input = document.getElementById('ppt-file');
+            const file = input.files[0];
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('output_format', 'pdf');
+
+            fetch(API_URL, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${API_KEY}`
+                },
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    const url = data.result.url;
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'converted.pdf';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                } else {
+                    console.error('Error:', data.error);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        // PDF转PPT
+        function pdfToPpt() {
+            const input = document.getElementById('pdf-file2');
+            const file = input.files[0];
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('output_format', 'pptx');
+
+            fetch(API_URL, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${API_KEY}`
+                },
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    const url = data.result.url;
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'converted.pptx';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                } else {
+                    console.error('Error:', data.error);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
 </body>
 </html>
