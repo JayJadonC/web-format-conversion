@@ -4,8 +4,7 @@ Currently, the entire file conversion feature is not functioning properly. Here 
 JavaScript Code (Frontend)
 In the script.js file, we write JavaScript code to handle file selection and conversion requests.
 
-JavaScript复制
-document.getElementById('convert-button').addEventListener('click', function() {
+    document.getElementById('convert-button').addEventListener('click', function() {
     const fileInput = document.getElementById('file-input');
     const file = fileInput.files[0];
     if (!file) {
@@ -35,18 +34,19 @@ document.getElementById('convert-button').addEventListener('click', function() {
     }).catch(error => {
         console.error('Error:', error);
         alert('File conversion failed, please try again later');
-    });
-});
+      });
+   });
 
 
 
 Backend Code (Node.js + Express)
-On the backend, we use Node.js and the Express framework to handle file uploads and conversion logic. Here, we assume the use of a simple library pdf-to-word for converting PDF to Word documents.
+On the backend, we use Node.js and the Express framework to handle file uploads and conversion logic. 
 First, install the necessary dependencies:
-bash复制
+
+bash
 npm install express multer pdf-to-word
 Then, write the backend code:
-JavaScript复制
+
 const express = require('express');
 const multer = require('multer');
 const pdfToWord = require('pdf-to-word');
@@ -87,10 +87,9 @@ app.post('/convert', upload.single('file'), (req, res) => {
             // Delete temporary files
             fs.unlinkSync(inputPath);
             fs.unlinkSync(outputPath);
-        });
-    });
-});
-
+           });
+       });
+   });
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
 });
