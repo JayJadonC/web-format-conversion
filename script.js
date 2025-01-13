@@ -1,100 +1,41 @@
-// 文件转换功能
-function showDownloadLink(resultFile, fileName) {
-    const downloadLink = document.createElement('a');
-    downloadLink.href = URL.createObjectURL(resultFile);
-    downloadLink.download = fileName;
-    downloadLink.textContent = '下载转换结果';
-    downloadLink.style.display = 'block';
-    downloadLink.style.marginTop = '10px';
-    return downloadLink;
+// OnlineConvertFree API的URL和API密钥
+const API_URL = 'https://api-tasker.onlineconvertfree.com/api/upload';
+const API_KEY = 'cb5f580f0375f29cf19bef365b30a22b';
+
+/**
+ * 文件格式转换
+ *
+ * @param {string} sourceId 原始文件元素ID
+ * @param {string} target 目标格式
+ */
+async function formatConverter(sourceId, target) {
+    const sourceFile = document.getElementById(sourceId).files[0];
+    const formData = new FormData();
+    formData.append("file", sourceFile);
+    formData.append("to", target);
+    formData.append("compress", "");
+    formData.append("token", API_KEY);
+    fetch(API_URL, {
+        method: "POST",
+        headers: {
+            Accept: "application/json"
+        },
+        body: formData
+    }).then(response => {
+
+        if (!response.ok) {
+            throw new Error("无法转换文件！");
+        }
+        return response.json();
+    }).then(
+        json => {
+            if (json.STATUS === "READY") {
+                const downloadLink = document.createElement("a");
+                downloadLink.href = json.CONVERTED_FILE;
+                downloadLink.click();
+            } else {
+                throw new Error("未能获取转换后的文件！");
+            }
+        }
+    ).catch(console.error);
 }
-
-document.addEventListener('DOMContentLoaded', function() {
-    // PDF转Word
-    const pdfToWordForm = document.getElementById('pdf-to-word-form');
-    if (pdfToWordForm) {
-        pdfToWordForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const fileInput = document.getElementById('pdf-file');
-            const resultArea = pdfToWordForm.querySelector('.result-area');
-            
-            if (fileInput.files.length > 0) {
-                resultArea.textContent = '正在转换...';
-                try {
-                    // 这里将调用PDF转Word的代码
-                    const resultFile = new Blob(['转换结果内容'], { type: 'application/msword' });
-                    resultArea.textContent = '转换成功！';
-                    resultArea.appendChild(showDownloadLink(resultFile, 'converted.docx'));
-                } catch (error) {
-                    resultArea.textContent = '转换失败：' + error.message;
-                }
-            }
-        });
-    }
-
-    // Word转PDF
-    const wordToPdfForm = document.getElementById('word-to-pdf-form');
-    if (wordToPdfForm) {
-        wordToPdfForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const fileInput = document.getElementById('word-file');
-            const resultArea = wordToPdfForm.querySelector('.result-area');
-            
-            if (fileInput.files.length > 0) {
-                resultArea.textContent = '正在转换...';
-                try {
-                    // 这里将调用Word转PDF的代码
-                    const resultFile = new Blob(['转换结果内容'], { type: 'application/pdf' });
-                    resultArea.textContent = '转换成功！';
-                    resultArea.appendChild(showDownloadLink(resultFile, 'converted.pdf'));
-                } catch (error) {
-                    resultArea.textContent = '转换失败：' + error.message;
-                }
-            }
-        });
-    }
-
-    // PPT转PDF
-    const pptToPdfForm = document.getElementById('ppt-to-pdf-form');
-    if (pptToPdfForm) {
-        pptToPdfForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const fileInput = document.getElementById('ppt-file');
-            const resultArea = pptToPdfForm.querySelector('.result-area');
-            
-            if (fileInput.files.length > 0) {
-                resultArea.textContent = '正在转换...';
-                try {
-                    // 这里将调用PPT转PDF的代码
-                    const resultFile = new Blob(['转换结果内容'], { type: 'application/pdf' });
-                    resultArea.textContent = '转换成功！';
-                    resultArea.appendChild(showDownloadLink(resultFile, 'converted.pdf'));
-                } catch (error) {
-                    resultArea.textContent = '转换失败：' + error.message;
-                }
-            }
-        });
-    }
-
-    // PDF转PPT
-    const pdfToPptForm = document.getElementById('pdf-to-ppt-form');
-    if (pdfToPptForm) {
-        pdfToPptForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const fileInput = document.getElementById('pdf-file');
-            const resultArea = pdfToPptForm.querySelector('.result-area');
-            
-            if (fileInput.files.length > 0) {
-                resultArea.textContent = '正在转换...';
-                try {
-                    // 这里将调用PDF转PPT的代码
-                    const resultFile = new Blob(['转换结果内容'], { type: 'application/vnd.ms-powerpoint' });
-                    resultArea.textContent = '转换成功！';
-                    resultArea.appendChild(showDownloadLink(resultFile, 'converted.pptx'));
-                } catch (error) {
-                    resultArea.textContent = '转换失败：' + error.message;
-                }
-            }
-        });
-    }
-});
