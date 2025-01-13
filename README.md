@@ -3,7 +3,9 @@
 
 I have built a website that includes a simple format conversion function. Everyone is welcome to contribute.
 
-Currently, the entire file conversion feature is not functioning properly. Here are some possible solutions to achieve this functionality.
+With the participation of DRAGON1573, there are now two versions, 1.0.1.1 and 1.0.1.2. In version 1.0.1.1, you need to edit the API key and API URL in the features to achieve the file conversion function; in version 1.0.1.2, it seems that you can run it directly. 
+
+Here are some possible solutions to achieve this functionality.
 
 ## JavaScript Code (Frontend)
 
