@@ -25,8 +25,8 @@
             <h2>PDF 转 Word</h2>
             <form id="pdf-to-word-form">
                 <input type="file" id="pdf-file" accept=".pdf" required>
-                <button type="button" onclick="pdfToWord()">开始转换</button>
-                <div class="result-area"></div>
+                <button type="button" onclick="convertFile('pdf-file', 'docx', 'pdf-to-word-result')">开始转换</button>
+                <div class="result-area" id="pdf-to-word-result"></div>
             </form>
         </div>
 
@@ -35,8 +35,8 @@
             <h2>Word 转 PDF</h2>
             <form id="word-to-pdf-form">
                 <input type="file" id="word-file" accept=".doc,.docx" required>
-                <button type="button" onclick="wordToPdf()">开始转换</button>
-                <div class="result-area"></div>
+                <button type="button" onclick="convertFile('word-file', 'pdf', 'word-to-pdf-result')">开始转换</button>
+                <div class="result-area" id="word-to-pdf-result"></div>
             </form>
         </div>
 
@@ -45,8 +45,8 @@
             <h2>PPT 转 PDF</h2>
             <form id="ppt-to-pdf-form">
                 <input type="file" id="ppt-file" accept=".ppt,.pptx" required>
-                <button type="button" onclick="pptToPdf()">开始转换</button>
-                <div class="result-area"></div>
+                <button type="button" onclick="convertFile('ppt-file', 'pdf', 'ppt-to-pdf-result')">开始转换</button>
+                <div class="result-area" id="ppt-to-pdf-result"></div>
             </form>
         </div>
 
@@ -55,24 +55,27 @@
             <h2>PDF 转 PPT</h2>
             <form id="pdf-to-ppt-form">
                 <input type="file" id="pdf-file2" accept=".pdf" required>
-                <button type="button" onclick="pdfToPpt()">开始转换</button>
-                <div class="result-area"></div>
+                <button type="button" onclick="convertFile('pdf-file2', 'pptx', 'pdf-to-ppt-result')">开始转换</button>
+                <div class="result-area" id="pdf-to-ppt-result"></div>
             </form>
         </div>
     </main>
 
     <script>
-        // OnlineConvertFree API的URL和API密钥
-        const API_URL = 'https://api.onlineconvertfree.com/v1/convert';
-        const API_KEY = 'cb5f580f0375f29cf19bef365b30a22b';
+        // ocf-converter API的URL和API密钥
+        const API_URL = 'https://api.onlineconvertfree.com/v2/convert';
+        const API_KEY = 'cb5f580f0375f29cf19bef365b30a22b';  // 实际API密钥
 
-        // PDF转Word
-        function pdfToWord() {
-            const input = document.getElementById('pdf-file');
+        // 通用文件转换函数
+        function convertFile(inputId, outputFormat, resultId) {
+            const input = document.getElementById(inputId);
             const file = input.files[0];
+            const resultArea = document.getElementById(resultId);
+            resultArea.innerHTML = '转换中，请稍候...';
+
             const formData = new FormData();
             formData.append('file', file);
-            formData.append('output_format', 'docx');
+            formData.append('to', outputFormat);
 
             fetch(API_URL, {
                 method: 'POST',
@@ -88,130 +91,24 @@
                 return response.json();
             })
             .then(data => {
-                if (data.success) {
-                    const url = data.result.url;
+                if (data.status === 'ok') {
+                    const url = data.data.url;
                     const a = document.createElement('a');
                     a.href = url;
-                    a.download = 'converted.docx';
+                    a.download = `converted.${outputFormat}`;
                     document.body.appendChild(a);
                     a.click();
                     document.body.removeChild(a);
+                    resultArea.innerHTML = '转换成功，下载已开始';
                 } else {
+                    resultArea.innerHTML = `转换失败：${data.error.message}`;
                     console.error('Error:', data.error);
                 }
             })
-            .catch(error => console.error('Error:', error));
-        }
-
-        // Word转PDF
-        function wordToPdf() {
-            const input = document.getElementById('word-file');
-            const file = input.files[0];
-            const formData = new FormData();
-            formData.append('file', file);
-            formData.append('output_format', 'pdf');
-
-            fetch(API_URL, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${API_KEY}`
-                },
-                body: formData
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok ' + response.statusText);
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.success) {
-                    const url = data.result.url;
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = 'converted.pdf';
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                } else {
-                    console.error('Error:', data.error);
-                }
-            })
-            .catch(error => console.error('Error:', error));
-        }
-
-        // PPT转PDF
-        function pptToPdf() {
-            const input = document.getElementById('ppt-file');
-            const file = input.files[0];
-            const formData = new FormData();
-            formData.append('file', file);
-            formData.append('output_format', 'pdf');
-
-            fetch(API_URL, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${API_KEY}`
-                },
-                body: formData
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok ' + response.statusText);
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.success) {
-                    const url = data.result.url;
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = 'converted.pdf';
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                } else {
-                    console.error('Error:', data.error);
-                }
-            })
-            .catch(error => console.error('Error:', error));
-        }
-
-        // PDF转PPT
-        function pdfToPpt() {
-            const input = document.getElementById('pdf-file2');
-            const file = input.files[0];
-            const formData = new FormData();
-            formData.append('file', file);
-            formData.append('output_format', 'pptx');
-
-            fetch(API_URL, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${API_KEY}`
-                },
-                body: formData
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok ' + response.statusText);
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.success) {
-                    const url = data.result.url;
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = 'converted.pptx';
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                } else {
-                    console.error('Error:', data.error);
-                }
-            })
-            .catch(error => console.error('Error:', error));
+            .catch(error => {
+                resultArea.innerHTML = `转换失败：${error.message}`;
+                console.error('Error:', error);
+            });
         }
     </script>
 </body>
